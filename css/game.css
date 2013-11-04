@@ -1,0 +1,50 @@
+*{
+    margin:0;
+    padding:0;
+    border:0;
+}
+canvas {
+    margin:0 auto;
+    background:#000;
+    display: block;
+}
+
+body{
+        background: #fff;
+        color: #fff;
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 18px;
+}
+#gameUI{
+    width:700px;
+    height:500px;
+    margin-left:325px;
+    position:absolute;
+}
+#gameStart button{
+    display:block;
+    width:90px;
+    height:20px;
+    padding:2px;
+    background:#36c;
+}
+#onePlayer{
+    position:relative;
+    top:220px;
+    left:290px;
+}
+#twoPlayer{
+    position:relative;
+    top:250px;
+    left:290px;
+}
+#option{
+    position:relative;
+    top:430px;
+    left:490px;
+}
+#explain{
+    position:relative;
+    top:410px;
+    left:590px;
+}
