@@ -10,7 +10,6 @@ $(document).ready(function() {
     canvas.attr("width",canvasWidth);
 	var canvasHeight = mapHeight*stepSize; 
     canvas.attr("height",canvasHeight);
-	
 	// Game settings
 	var playGame;
     var tanks = new Array(); 
@@ -18,56 +17,12 @@ $(document).ready(function() {
     var playerNum;
     var playerOne;
     var playerTwo;
+    var level = 0;
         // "S" is "still","L","R","U","D" stand for left,right,up,down
     var directions = ["S","L","R","U","D"]; 
-        //  in the map,0 stands for space,1,2,3 stands for different grids
-    var map=[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
-
+    var map = levelMap[level];
     // enemy settings
-    var enemySum = 10;
+    var enemySum = 5;
     var minEnemy = 3;
 
     // keyboard keycodes
@@ -86,16 +41,17 @@ $(document).ready(function() {
     
 
 	// Class that defines new tanks to draw
-	var Tank = function(x, y, v, type, rank, direction,bulletDire,bulletType,bulletTime) {
+	var Tank = function(x, y, v, type, rank, direction,bulletDire,bulletType,blood) {
 		this.x = x;
 		this.y = y;
         this.v = v;
 		this.type = type;
 		this.rank = rank;
+        this.blood = blood;
         this.direction=direction;
+        this.noHurtTime = 60;  // 60 frames about a second
 		this.bulletDire = bulletDire;// bullet direcition
 		this.bulletType = bulletType;// bullet type  
-        this.bulletTime = bulletTime;// bullte time lag
         this.bX = 0;  // the position x of the bullet 
         this.bY = 0;  // the position y of the bullet
         this.bR = 0;  // the radius of the bullet
@@ -123,12 +79,14 @@ $(document).ready(function() {
                         grids.push(new Grid(i*stepSize,j*stepSize,stepSize,stepSize,1));
                         break;
                     case 2:
-                        context.fillStyle = "rgb(100,100,100)";
-                        context.fillRect(0,0,120,120);
+                        context.fillStyle = "#eeeeee";
+                        context.fillRect(i*stepSize,j*stepSize,stepSize,stepSize);
+                        grids.push(new Grid(i*stepSize,j*stepSize,stepSize,stepSize,2));
                         break;
                     case 3:
-                        context.fillStyle = "rgb(100,100,100)";
-                        context.fillRect(0,0,120,120);
+                        context.fillStyle = "#ac6c53";
+                        context.fillRect(i*stepSize,j*stepSize,stepSize,stepSize);
+                        grids.push(new Grid(i*stepSize,j*stepSize,stepSize,stepSize,3));
                         break;
                     default:
                 }
@@ -141,7 +99,19 @@ $(document).ready(function() {
         var gridsLen = grids.length;
         for(var i=0;i<gridsLen;i++){
             gridA = grids[i];
-            context.fillStyle = "#ac6c53";
+            switch(gridA.type){
+                case 1:
+                    context.fillStyle = "#ac6c53";
+                    break;
+                case 2:
+                    context.fillStyle = "#eeeeee";
+                    break;
+                case 3:
+                    context.fillStyle = "#ac6c53";
+                    break;
+                default:
+            }
+
             context.fillRect(gridA.x,gridA.y,stepSize,stepSize);
         }
     }
@@ -222,15 +192,15 @@ $(document).ready(function() {
         playGame = true;
         loadMap();
         // players 
-        playerOne = new Tank(14*stepSize,40*stepSize,stepSize,"player",1,"S","U",1,300);
+        playerOne = new Tank(14*stepSize,40*stepSize,stepSize,"player",1,"S","U",1,0);
         tanks.push(playerOne);
         if(playerNum==2){
-            playerTwo = new Tank(canvasWidth/2,canvasHeight/2,stepSize,"player",1,"S","U",1,300);
+            playerTwo = new Tank(20*stepSize,40*stepSize,stepSize,"player",1,"S","U",1,0);
             tanks.push(playerTwo);
         }
-        //enemies
+        //enemies   initialization
         for(var i=0;i<4;i++){
-            tanks.push(new Tank(8*i*stepSize,0,0.5*stepSize,"enemy",1,"D","D",1,300));
+            tanks.push(new Tank(8*i*stepSize,0,0.5*stepSize,"enemy",1,"D","D",1,1));
         }
 
 
@@ -270,26 +240,26 @@ $(document).ready(function() {
                         playerOne.bX = playerOne.x;
                         playerOne.bY = playerOne.y + 2*stepSize;
                         playerOne.bR = 0.5*stepSize;
-                        playerOne.bvX = -10;
+                        playerOne.bvX = -1.5*stepSize;
                         playerOne.bvY = 0;
                      }else if(playerOne.bulletDire == "R"){
                         playerOne.bX = playerOne.x + 4*stepSize;
                         playerOne.bY = playerOne.y + 2*stepSize;
                         playerOne.bR = 0.5*stepSize;
-                        playerOne.bvX = 10;
+                        playerOne.bvX = 1.5*stepSize;
                         playerOne.bvY = 0;
                      }else if(playerOne.bulletDire == "U"){
                         playerOne.bX = playerOne.x + 2*stepSize;
                         playerOne.bY = playerOne.y;
                         playerOne.bR = 0.5*stepSize;
                         playerOne.bvX = 0;
-                        playerOne.bvY = -10;
+                        playerOne.bvY = -1.5*stepSize;
                      }else if(playerOne.bulletDire == "D"){
                         playerOne.bX = playerOne.x + 2*stepSize;
                         playerOne.bY = playerOne.y + 4*stepSize;
                         playerOne.bR = 0.5*stepSize;
                         playerOne.bvX = 0;
-                        playerOne.bvY = 10;
+                        playerOne.bvY = 1.5*stepSize;
                      }
                     break;
                 default:
@@ -338,8 +308,10 @@ $(document).ready(function() {
 	};
 	
     // game over
-    function gameOver(){
-        console.log("game over");
+    function gameOver(isWin){
+        playGame = false;
+        if(isWin)  alert("you win");
+        else alert("you lose");
     }
 	// Animation loop that does all the fun stuff
 	function animate() {		
@@ -389,28 +361,43 @@ $(document).ready(function() {
                 tankA.bX = tankA.x;
                 tankA.bY = tankA.y + 2*stepSize;
                 tankA.bR = 0.5*stepSize;
-                tankA.bvX = -10;
+                tankA.bvX = -1.2*tankA.v;
                 tankA.bvY = 0;
             }else if(tankA.bulletDire == "R"){
                 tankA.bX = tankA.x + 4*stepSize;
                 tankA.bY = tankA.y + 2*stepSize;
                 tankA.bR = 0.5*stepSize;
-                tankA.bvX = 10;
+                tankA.bvX = 1.2*tankA.v;
                 tankA.bvY = 0;
             }else if(tankA.bulletDire == "U"){
                 tankA.bX = tankA.x + 2*stepSize;
                 tankA.bY = tankA.y;
                 tankA.bR = 0.5*stepSize;
                 tankA.bvX = 0;
-                tankA.bvY = -10;
+                tankA.bvY = -1.2*tankA.v;
             }else if(tankA.bulletDire == "D"){
                 tankA.bX = tankA.x + 2*stepSize;
                 tankA.bY = tankA.y + 4*stepSize;
                 tankA.bR = 0.5*stepSize;
                 tankA.bvX = 0;
-                tankA.bvY = 10;
+                tankA.bvY = 1.2*tankA.v;
             }
         }
+
+        //  if enemies all die,game over
+        if(tanksLen == playerNum)  gameOver(true);  // the boolen indicates the victory
+        // adjust the amount of enemies present 
+        if((tanksLen-playerNum)<minEnemy && enemySum-4>0){
+            var presentPlace = Math.floor(Math.random()*6);
+            for(var i=0;i<tanksLen;i++){
+                var tankA = tanks[i];
+                if(tankA.y>4*stepSize || Math.abs(tankA.x-8*presentPlace*stepSize)<4*stepSize){
+                    tanks.push(new Tank(8*presentPlace*stepSize,0,0.5*stepSize,"enemy",1,"D","D",1,1));
+                    enemySum -=1;
+                }
+            }
+        }
+
     }
     // functions that deal with the collision
     function tankGrid() {
@@ -463,14 +450,18 @@ $(document).ready(function() {
                 var gridA = grids[j];
                 if( Math.abs(tankA.bX-gridA.x-0.5*stepSize)<stepSize && Math.abs(tankA.bY-gridA.y-0.5*stepSize)<1.5*stepSize){  
                     if(tankA.bulletDire == "L"|| tankA.bulletDire == "R"){
-                        grids.splice(j,1);
                         tankA.bR = 0;
+                        if(gridA.type == 1){
+                            grids.splice(j,1);
+                        }
                     }
               }
                 if( Math.abs(tankA.bY-gridA.y-0.5*stepSize)<stepSize && Math.abs(tankA.bX-gridA.x-0.5*stepSize)<1.5*stepSize){  
                     if(tankA.bulletDire == "U"|| tankA.bulletDire == "D"){
-                        grids.splice(j,1);
                         tankA.bR = 0;
+                        if(gridA.type == 1){
+                            grids.splice(j,1);
+                        }
                     }
               }
             }
@@ -481,7 +472,7 @@ $(document).ready(function() {
             //  if a bullet hits the target,then game over 
             if(tankA.bX > stepSize*(mapWidth/2-2) && tankA.bX < stepSize*(mapWidth/2+2) && tankA.bY > stepSize*(mapHeight-4) && tankA.bY < stepSize*mapHeight){
                 tankA.bR = 0;
-                gameOver();
+                gameOver(false);
             }
         }
 
@@ -540,7 +531,9 @@ $(document).ready(function() {
                 if(distance < 2*stepSize+tankA.bR){
                     tankA.bR = 0;
                     //  tankB will be hurt 
-                    tanks.splice(j,1);
+                    tankA.blood -=1;
+                    if(tankA.blood <= 0)
+                        tanks.splice(j,1);
                 }
             }
         }
