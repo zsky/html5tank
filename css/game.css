@@ -48,3 +48,11 @@ body{
     top:410px;
     left:590px;
 }
+#mapControl{
+    width:300px;
+    height:500px;
+    position:relative;
+    top:0px;
+    left:620px;
+    background:#333;
+}

@@ -38,6 +38,7 @@ $(document).ready(function() {
 	var uiStat = $("#gameStat");
     var oneStart = $("#onePlayer");
     var twoStart = $("#twoPlayer");
+    var mapControl = $("mapControl");
     
 
 	// Class that defines new tanks to draw
@@ -297,15 +298,6 @@ $(document).ready(function() {
 		animate();
 	};
 	
-	// Inititialise the game environment
-	function init() {
-     //   oneStart.on("click",function(e){
-      //      e.preventDefault;
-            uiStart.hide();
-            playerNum = 1;
-            startGame();
-     //   });
-	};
 	
     // game over
     function gameOver(isWin){
@@ -534,7 +526,7 @@ $(document).ready(function() {
                     tankA.blood -=1;
                     if(tankA.blood <= 0)
                         tanks.splice(j,1);
-                }
+               }
             }
         }
            // enemy's  bullet bomb with players 
@@ -561,17 +553,61 @@ $(document).ready(function() {
 
 
 
+    // players can make their own map
+    function makeMap(){
+        var grid = 0;
+        var draw = false;
+        var i,j;  // the position of the painted grid
+        $("#gridA").on("click",function(e){
+            grid = 1;
+        });
+        $(window).on("mousedown",function(e){
+            draw = true;
+        }).on("mouseup",function(e){
+            draw = false;
+        });
+        $(window).on("mousemove",function(e){
+            for(i = 0;i<mapWidth;i++){
+                for(j =4;j<mapHeight-6;j++){
+                    map[j][i] = 0;
+                }
+            }
+            if(draw && grid !== 0){
+                var canvasOffset = canvas.offset();
+                var canvasX = e.pageX-canvasOffset.left;
+                var canvasY = e.pageY-canvasOffset.top;
+                if(canvasX > 0 && canvasX <mapWidth*stepSize && canvasY > 4* stepSize &&
+                    canvasY < (mapHeight-4)*stepSize){
+                        i = Math.floor(canvasX/stepSize);
+                        j = Math.floor(canvasY/stepSize);
+                        console.log([i,j]);
+                        context.fillStyle = "#ac6c53";
+                        context.fillRect(i*stepSize,j*stepSize,stepSize,stepSize);
+                        map[j][i] = 1;
+                    }
+            }
+        });
+
+        $("#startGame").on("click",function(e){
+            startGame();
+            $(this).prop("disabled",true);
+        });
+    }
 
 
 
 
 
-
-
-
-
-
-
+	// Inititialise the game environment
+	function init() {
+     //   oneStart.on("click",function(e){
+      //      e.preventDefault;
+            uiStart.hide();
+            playerNum = 1;
+       //     startGame();
+            makeMap();
+     //   });
+	};
 
 
 
