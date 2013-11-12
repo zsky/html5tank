@@ -8,6 +8,7 @@
         <link href="css/game.css" rel="stylesheet" type="text/css">
                 
         <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="js/levelData.js"></script>
         <script type="text/javascript" src="js/game.js"></script>
     </head>
@@ -22,6 +23,11 @@
                     <button id="explain">explain</button>
                     </div>
                 </div>
+                <div id = "setName">
+                    <input type = "text" id = "pseudo"/>
+                     <button id="setPseudo">send</button>
+                     <button id="onlineStart">start</button>
+                 </div>
                 <div id="gameInfo">
                 </div>
                 <div id="gameStat">

@@ -55,4 +55,13 @@ body{
     top:0px;
     left:620px;
     background:#333;
+    display: none;
+}
+#setName{
+    width:200px;
+    height:200px;
+    position:relative;
+    top:0px;
+    left:-220px;
+    background:#333;
 }
