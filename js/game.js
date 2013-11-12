@@ -604,8 +604,8 @@ $(document).ready(function() {
       //      e.preventDefault;
             uiStart.hide();
             playerNum = 1;
-       //     startGame();
-            makeMap();
+            startGame();
+       //     makeMap();
      //   });
 	};
 
